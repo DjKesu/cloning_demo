@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     if (listening && transcript) {
       const silenceTimeout = setTimeout(() => {
-        stopListening();
+        SpeechRecognition.stopListening();
       }, 1500);
 
       return () => {
@@ -45,12 +45,6 @@ function App() {
       createConversation(transcript).then((response) => {
         setResponse(response);
         console.log(response);
-        textToSpeech(response).then((audio) => {
-          const audioBlob = new Blob([audio], { type: "audio/mpeg" });
-          const audioUrl = URL.createObjectURL(audioBlob);
-          const audioElement = new Audio(audioUrl);
-          audioElement.play();
-        });
       });
       SpeechRecognition.transcript = "";
     }
