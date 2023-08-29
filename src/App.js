@@ -11,8 +11,6 @@ function App() {
   const {
     transcript,
     listening,
-    resetTranscript,
-    startListening,
     stopListening,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
@@ -23,8 +21,7 @@ function App() {
     if (listening && transcript) {
       const silenceTimeout = setTimeout(() => {
         stopListening();
-      }, 1500); 
-
+      }, 1500);
 
       return () => {
         clearTimeout(silenceTimeout);
@@ -41,21 +38,22 @@ function App() {
   }
 
   function chatCreation() {
-    if(listening){
-      SpeechRecognition.stopListening()
-    }
-    SpeechRecognition.startListening()
-    createConversation(transcript).then((response) => {
-      setResponse(response);
-      console.log(response);
-      textToSpeech(response).then((audio) => {
-        const audioBlob = new Blob([audio], { type: "audio/mpeg" });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audioElement = new Audio(audioUrl);
-        audioElement.play();
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      SpeechRecognition.startListening();
+      createConversation(transcript).then((response) => {
+        setResponse(response);
+        console.log(response);
+        textToSpeech(response).then((audio) => {
+          const audioBlob = new Blob([audio], { type: "audio/mpeg" });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audioElement = new Audio(audioUrl);
+          audioElement.play();
+        });
       });
-    });
-    SpeechRecognition.transcript = ""
+      SpeechRecognition.transcript = "";
+    }
   }
 
   return (
@@ -63,13 +61,10 @@ function App() {
       <h1>Voice Chat Demo</h1>
       <img id="steve" src={steve} alt="Steve" />
       <p>Microphone: {listening ? "on" : "off"}</p>
-      <button
-        onClick={chatCreation}
-      >
-        {listening ? "Listening..." : "Start"}
+      <button onClick={chatCreation}>
+        {listening ? "Listening..." : "Ask me something"}
       </button>
       <p>{transcript}</p>
-      <button onClick={resetTranscript}>Reset</button>
     </div>
   );
 }

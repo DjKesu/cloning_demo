@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: #9F19E6;
@@ -28,5 +28,6 @@ button {
   background-color: #D2E823;
   padding: 0 40px;
   height: 40px;
+  width: 100%;
   font-size: 16px;
 }
