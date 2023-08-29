@@ -64,7 +64,7 @@ function App() {
       <button onClick={chatCreation}>
         {listening ? "Listening..." : "Ask me something"}
       </button>
-      <p>{transcript}</p>
+      <p>Your Question: {transcript}</p>
     </div>
   );
 }
