@@ -6,6 +6,7 @@ import SpeechRecognition, {
 import steve from "./static/steve.jpg";
 import createConversation from "./conversation";
 import textToSpeech from "./tts";
+import { async } from "gpt-react-app";
 
 function App() {
   const {
@@ -16,12 +17,13 @@ function App() {
   } = useSpeechRecognition();
 
   const [response, setResponse] = useState("");
+  const [speaking, setSpeaking] = useState(false);
 
   useEffect(() => {
     if (listening && transcript) {
       const silenceTimeout = setTimeout(() => {
         SpeechRecognition.stopListening();
-      }, 1500);
+      }, 3000);
 
       return () => {
         clearTimeout(silenceTimeout);
@@ -32,21 +34,36 @@ function App() {
   if (!browserSupportsSpeechRecognition) {
     return (
       <div className="body">
-        <h1>Speech Recognition is not supported in this browser.</h1>
+        <h1>Speech Recognition is not supported in this browser. You're the issue, not me lmao</h1>
       </div>
     );
   }
 
-  function chatCreation() {
+  async function speakNow(response){
+    setSpeaking(true);
+    await textToSpeech(response).then((audio) => {
+      console.log(speaking);
+      console.log(response);
+      console.log(audio);
+      const audioBlob = new Blob([audio], { type: "audio/mpeg" });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audioElement = new Audio(audioUrl);
+      console.log(audioElement);
+      audioElement.play();
+    });
+    setSpeaking(false);
+  }
+
+  async function chatCreation() {
     if (listening) {
       SpeechRecognition.stopListening();
     } else {
       SpeechRecognition.startListening();
-      createConversation(transcript).then((response) => {
+      await createConversation(transcript).then((response) => {
         setResponse(response);
         console.log(response);
       });
-      SpeechRecognition.transcript = "";
+      speakNow(response);
     }
   }
 
@@ -59,6 +76,8 @@ function App() {
         {listening ? "Listening..." : "Ask me something"}
       </button>
       <p>Your Question: {transcript}</p>
+      <p>Steve is speaking: {speaking ? "yes" : "no"}</p>
+      <p>Steve's Response: {response}</p>
     </div>
   );
 }

@@ -1,10 +1,7 @@
 import axios from 'axios';
 
-// Define a function called textToSpeech that takes in a string called inputText as its argument.
 const textToSpeech = async (inputText) => {
-    // require('dotenv').config();
   const API_KEY = process.env.REACT_APP_xi_api_key;
-  // Set the ID of the voice to be used.
   const VOICE_ID = process.env.REACT_APP_xi_voice_id;
 
   // Set options for the API request.
@@ -12,14 +9,14 @@ const textToSpeech = async (inputText) => {
     method: 'POST',
     url: `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
     headers: {
-      accept: 'audio/mpeg', // Set the expected response type to audio/mpeg.
-      'content-type': 'application/json', // Set the content type to application/json.
-      'xi-api-key': `${API_KEY}`, // Set the API key in the headers.
+      accept: 'audio/mpeg', 
+      'content-type': 'application/json',
+      'xi-api-key': `${API_KEY}`,
     },
     data: {
-      text: inputText, // Pass in the inputText as the text to be converted to speech.
+      text: inputText, 
     },
-    responseType: 'arraybuffer', // Set the responseType to arraybuffer to receive binary data as response.
+    responseType: 'arraybuffer', 
   };
 
   // Send the API request using Axios and wait for the response.
@@ -29,5 +26,4 @@ const textToSpeech = async (inputText) => {
   return speechDetails.data;
 };
 
-// Export the textToSpeech function as the default export of this module.
 export default textToSpeech;
