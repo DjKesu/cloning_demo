@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import textToSpeech from "./tts"
 
 const apiKey = process.env.REACT_APP_openai_api_key;
 const orgId = process.env.REACT_APP_openai_org_id;
@@ -19,7 +18,7 @@ async function createConversation(text) {
     ],
     stream: false, // Not using streaming here
     max_tokens: 150,
-    stop: ["\n", " Human:"]
+    stop: ["\n"]
   });
 
   // Get the content directly from the response

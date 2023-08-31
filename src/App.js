@@ -61,8 +61,9 @@ function App() {
       await createConversation(transcript).then((response) => {
         setResponse(response);
         console.log(response);
+        speakNow(response);
       });
-      speakNow(response);
+      SpeechRecognition.transcript = "";
     }
   }
 
