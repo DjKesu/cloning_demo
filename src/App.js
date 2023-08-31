@@ -6,7 +6,6 @@ import SpeechRecognition, {
 import steve from "./static/steve.jpg";
 import createConversation from "./conversation";
 import textToSpeech from "./tts";
-import { async } from "gpt-react-app";
 
 function App() {
   const {
