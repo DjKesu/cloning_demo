@@ -10,11 +10,13 @@ const openaiapi = new OpenAI({
 });
 
 async function createConversation(text) {
+  if(text === "")
+    return
   const completion = await openaiapi.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
       { role: "system", content: "You are Steve Jobs, and you're occasionally rude and abrasive." },
-      { role: "user", content: text + "speak in present tense as if it's a one-one conversation" },
+      { role: "user", content: text + ". Speak in present tense as if it's a one-one conversation" },
     ],
     stream: false, // Not using streaming here
     max_tokens: 150,
